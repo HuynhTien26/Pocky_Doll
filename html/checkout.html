@@ -7,7 +7,7 @@
     
         <link rel="stylesheet" href="../../assets/css/checkout.css">
     
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="Images/admin/background.png" rel="stylesheet">
 </head>
 <body>
     <h1 class="page-title">XÁC NHẬN ĐƠN HÀNG</h1>
@@ -42,7 +42,7 @@
                     <p style="margin: 5px 0 0 0;"><span id="shipping-address">Đang tải địa chỉ...</span></p>
                     <p style="margin: 5px 0 0 0;">SĐT: <span id="shipping-phone">09xx.xxx.xxx</span></p>
                 </div>
-                <p style="font-size: 0.9em; opacity: 0.8;">(Chọn **"Nhập địa chỉ mới"** nếu muốn giao tới nơi khác)</p>
+                <p style="font-size: 0.9em; opacity: 0.8;">(Chọn "Nhập địa chỉ mới" nếu muốn giao tới nơi khác)</p>
             </div>
             
             <div id="newAddressMode" style="display: none;">
@@ -51,9 +51,10 @@
                     <div class="address-form-new"> 
                         
                         <input type="text" id="new_name" placeholder="Họ và Tên" required>
-                        <input type="tel" id="new_phone" placeholder="Số điện thoại" required>
+                        
+                                                <input type="tel" id="new_phone" placeholder="Số điện thoại" required>
 
-                        <input type="text" id="new_address_detail" placeholder="Số nhà, Tên đường..." required>
+                                                <input type="text" id="new_address_detail" placeholder="Số nhà, Tên đường..." required>
                         
                         <div class="input-group"> 
                             <select id="new_province" required>
@@ -90,6 +91,14 @@
         </button>
         
     </div>
+ 
+<div id="customModalBackdrop" class="modal-backdrop" style="display: none;">
+    <div id="customModalContent" class="modal-content">
+        <h3 id="modalTitle" style="text-align: center; color: white;">Thông báo Đặt hàng</h3>
+        <p id="modalMessage" style="white-space: pre-line; margin-bottom: 20px;"></p>
+        <button id="modalCloseBtn" class="confirm-button" style="width: 100px; margin: 0 auto;">OK</button>
+    </div>
+</div>
 
         <script src="../../assets/js/checkout.js"></script>
 </body>
