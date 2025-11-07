@@ -48,7 +48,7 @@ function handleLogout() {
         // Bỏ qua lỗi nếu không thể truy cập sessionStorage
     }
     // Chuyển hướng về trang đăng nhập
-    window.location.href = 'login.html';
+    window.location.replace('login.html');
 }
 
 // ===== TOGGLE SIDEBAR CHO MOBILE =====
