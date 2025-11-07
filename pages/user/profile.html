@@ -24,8 +24,23 @@
 
                 <form id="profileForm">
                     <div class="form-row">
-                        <label>Tên đăng nhập</label>
-                        <input type="text" id="displayUsername" disabled />
+                        <label for="username">Tên đăng nhập</label>
+                        <input type="text" id="username" class="input" required />
+                    </div>
+
+                    <div class="form-row">
+                        <label for="currentPassword">Mật khẩu hiện tại</label>
+                        <input type="password" id="currentPassword" class="input" autocomplete="current-password" />
+                    </div>
+
+                    <div class="form-row">
+                        <label for="newPassword">Mật khẩu mới</label>
+                        <input type="password" id="newPassword" class="input" autocomplete="new-password" />
+                    </div>
+
+                    <div class="form-row">
+                        <label for="confirmPassword">Xác nhận mật khẩu mới</label>
+                        <input type="password" id="confirmPassword" class="input" autocomplete="new-password" />
                     </div>
 
                     <div class="form-row">
@@ -39,25 +54,33 @@
                     </div>
 
                     <div class="form-row">
-                        <label for="phone">Số điện thoại</label>
-                        <input type="tel" id="phone" class="input" />
+                        <label for="address">Địa chỉ</label>
+                        <textarea id="address" class="input" rows="3" style="resize:vertical;"></textarea>
                     </div>
 
-                    <button type="submit" class="btn">Lưu thay đổi</button>
-                    <button
-                        type="button"
-                        class="btn btn-secondary"
-                        id="logoutBtn"
-                    >
-                        Đăng xuất
-                    </button>
-                    <button
-                        type="button"
-                        class="btn btn-danger"
-                        id="deleteAccountBtn"
-                    >
-                        Xóa tài khoản
-                    </button>
+                    <div class="form-row">
+                        <button type="submit" class="btn">Lưu thay đổi</button>
+                    </div>
+
+                    <div class="form-row">
+                        <button type="button" class="btn" id="logoutBtn">Đăng xuất</button>
+                    </div>
+
+                    <!-- delete account: initially a bold red underlined text -->
+                    <div class="form-row" style="margin-top:18px;">
+                        <div id="deleteAccountText" style="color:#c62828; text-decoration:underline; font-weight:700; cursor:pointer;">
+                            Xóa tài khoản
+                        </div>
+                        <!-- confirmation area (hidden initially) -->
+                        <div id="deleteConfirmArea" style="display:none; margin-top:12px;">
+                            <p style="color:#b71c1c; font-weight:600;">Bạn sắp xóa tài khoản. Vui lòng gõ tên đăng nhập <strong id="currentUsernameLabel"></strong> để xác nhận.</p>
+                            <input id="deleteConfirmInput" class="input" placeholder="Gõ lại tên đăng nhập" />
+                            <div style="display:flex; gap:8px; margin-top:8px;">
+                                <button id="confirmDeleteBtn" class="btn" style="background:#b71c1c; border:0; color:#fff;">⚠️ Delete Account</button>
+                                <button id="cancelDeleteBtn" type="button" class="btn">Don't Delete</button>
+                            </div>
+                        </div>
+                    </div>
                 </form>
             </main>
         </div>

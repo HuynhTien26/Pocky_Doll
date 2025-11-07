@@ -4,24 +4,21 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <title>Pocky Doll</title>
-
         <!-- Preconnect for font delivery -->
         <link rel="preconnect" href="https://c04.nhahodau.net/" crossorigin />
-
         <!-- Embedded Inter font -->
         <link rel="stylesheet" href="./assets/fonts/inter.css" />
-
         <!-- Font Awesome icons -->
         <link
             rel="stylesheet"
             href="./assets/icon/fontawesome-free-7.1.0-web/css/all.min.css"
         />
-
         <!-- Main stylesheet -->
         <link rel="stylesheet" href="./assets/css/user.css" />
-
         <!-- Defer JavaScript -->
         <script defer src="./assets/js/user.js"></script>
+        <!-- Auth helpers (renders header for signed-in users) -->
+        <script defer src="./assets/js/auth.js"></script>
     </head>
     <body>
         <div class="site-content-wrapper">
@@ -37,7 +34,6 @@
                             />
                         </a>
                     </div>
-
                     <div class="header-center">
                         <form
                             class="search-box"
@@ -57,7 +53,6 @@
                             </button>
                         </form>
                     </div>
-
                     <!-- Header Right: content will be replaced dynamically by JS -->
                     <nav
                         class="header-right"
@@ -75,7 +70,6 @@
                             </div>
                             <div class="icon-label">Trang chủ</div>
                         </a>
-
                         <a
                             href="pages/user/cart.html"
                             class="icon-with-label"
@@ -87,22 +81,29 @@
                             </div>
                             <div class="icon-label">Giỏ hàng</div>
                         </a>
-
                         <a
-                            href="pages/user/profile.html"
+                            href="pages/user/login.html"
                             class="icon-with-label"
-                            id="accountBtn"
-                            aria-label="Tài khoản"
+                            aria-label="Đăng nhập"
                         >
                             <div class="icon-wrap">
                                 <i class="fa-solid fa-user"></i>
                             </div>
-                            <div class="icon-label">Tài khoản</div>
+                            <div class="icon-label">Đăng nhập</div>
+                        </a>
+                        <a
+                            href="pages/user/signup.html"
+                            class="icon-with-label"
+                            aria-label="Đăng kí"
+                        >
+                            <div class="icon-wrap">
+                                <i class="fa-solid fa-signature"></i>
+                            </div>
+                            <div class="icon-label">Đăng kí</div>
                         </a>
                     </nav>
                 </div>
             </header>
-
             <section class="container">
                 <div class="hero-box" id="hero">
                     <div class="hero-slide active">
@@ -137,18 +138,15 @@
                     <div class="hero-dots" id="heroDots"></div>
                 </div>
             </section>
-
             <section class="container">
                 <div id="topics" class="topics-list"></div>
             </section>
-
             <main class="container main-area">
                 <section id="products" aria-label="Danh sách sản phẩm">
                     <div class="grid" id="grid"></div>
                 </section>
                 <div class="pager" id="pager"></div>
             </main>
-
             <div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
                 <div
                     class="modal"

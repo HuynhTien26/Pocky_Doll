@@ -352,16 +352,41 @@ function closeModal() {
 }
 
 /**
- * Logic thêm sản phẩm vào giỏ hàng (phiên bản demo).
+ * Logic thêm sản phẩm vào giỏ hàng, sử dụng Local Storage để lưu trữ.
  * @param {number} id - ID của sản phẩm được thêm.
  */
-let cart = [];
 function addToCart(id) {
-  const p = PRODUCTS.find((x) => x.id === id);
-  if (!p) return;
-  cart.push(p);
-  alert(`${p.name} đã được thêm vào giỏ hàng!`);
-  console.log("Giỏ hàng hiện tại:", cart);
+    const productToAdd = PRODUCTS.find((x) => x.id === id);
+    if (!productToAdd) return;
+
+    // 1. Đọc giỏ hàng hiện tại từ Local Storage (Dùng key 'cartItems')
+    let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+    // 2. Kiểm tra xem sản phẩm đã có trong giỏ chưa
+    const existingItem = cartItems.find(item => item.id === id);
+    let currentQuantity = 1;
+
+    if (existingItem) {
+        // Nếu có, tăng số lượng lên 1
+        existingItem.quantity += 1;
+        currentQuantity = existingItem.quantity;
+    } else {
+        // Nếu chưa, thêm sản phẩm mới vào (với số lượng = 1 và đầy đủ data)
+        cartItems.push({
+            id: productToAdd.id,
+            name: productToAdd.name,
+            price: productToAdd.price,
+            image: productToAdd.img,
+            quantity: 1,
+            desc: productToAdd.desc // Thêm desc để hiển thị chi tiết trong cart
+        });
+    }
+
+    // 3. Lưu lại giỏ hàng vào Local Storage
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+
+    alert(`${productToAdd.name} đã được thêm vào giỏ hàng!`);
+    console.log("Giỏ hàng đã lưu vào Local Storage. Số lượng:", currentQuantity);
 }
 
 /**

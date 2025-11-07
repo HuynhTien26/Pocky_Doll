@@ -1,59 +1,148 @@
-// Check if user is logged in
+// Profile management using sessionStorage.loggedInUser and localStorage.accounts
 (function () {
-  const currentUser = localStorage.getItem("currentUser");
-  if (!currentUser) {
-    alert("Vui lòng đăng nhập để truy cập trang này.");
-    window.location.href = "login.html";
+  const logged = sessionStorage.getItem('loggedInUser');
+  if (!logged) {
+    alert('Vui lòng đăng nhập để truy cập trang này.');
+    location.href = 'login.html';
     return;
   }
 
-  // Load user data
-  const users = JSON.parse(localStorage.getItem("users") || "[]");
-  const user = users.find((u) => u.username === currentUser);
+  let accounts = JSON.parse(localStorage.getItem('accounts') || '[]');
+  const user = accounts.find(a => a.username === logged);
 
   if (!user) {
-    localStorage.removeItem("currentUser");
-    window.location.href = "login.html";
+    sessionStorage.removeItem('loggedInUser');
+    alert('Người dùng không tồn tại. Vui lòng đăng nhập lại.');
+    location.href = 'login.html';
     return;
   }
 
-  // Populate form
-  document.getElementById("displayUsername").value = user.username;
-  document.getElementById("fullName").value = user.profile.fullName || "";
-  document.getElementById("email").value = user.profile.email || "";
-  document.getElementById("phone").value = user.profile.phone || "";
+  // Ensure profile object exists
+  user.profile = user.profile || {};
 
-  // Handle form submission
-  document.getElementById("profileForm").addEventListener("submit", (e) => {
+  // Populate form fields
+  const usernameInput = document.getElementById('username');
+  const currentPasswordInput = document.getElementById('currentPassword');
+  const newPasswordInput = document.getElementById('newPassword');
+  const confirmPasswordInput = document.getElementById('confirmPassword');
+  const fullNameInput = document.getElementById('fullName');
+  const emailInput = document.getElementById('email');
+  const addressInput = document.getElementById('address');
+
+  usernameInput.value = user.username;
+  fullNameInput.value = user.profile.fullName || '';
+  emailInput.value = user.profile.email || '';
+  addressInput.value = user.profile.address || '';
+
+  // Save changes
+  document.getElementById('profileForm').addEventListener('submit', (e) => {
     e.preventDefault();
 
-    user.profile.fullName = document.getElementById("fullName").value;
-    user.profile.email = document.getElementById("email").value;
-    user.profile.phone = document.getElementById("phone").value;
+    const newUsername = usernameInput.value.trim();
+    const currentPw = currentPasswordInput.value;
+    const newPw = newPasswordInput.value;
+    const confirmPw = confirmPasswordInput.value;
 
-    localStorage.setItem("users", JSON.stringify(users));
-    alert("Cập nhật thông tin thành công!");
+    // Username change: check uniqueness
+    if (!newUsername) {
+      alert('Tên đăng nhập không được để trống.');
+      return;
+    }
+    if (newUsername !== user.username) {
+      if (accounts.find(a => a.username === newUsername)) {
+        alert('Tên đăng nhập đã được sử dụng. Vui lòng chọn tên khác.');
+        return;
+      }
+    }
+
+    // Password change (optional). If user entered a new password, require current password and confirmation
+    if (newPw || confirmPw) {
+      if (!currentPw) {
+        alert('Vui lòng nhập mật khẩu hiện tại để thay đổi mật khẩu.');
+        return;
+      }
+      if (currentPw !== user.password) {
+        alert('Mật khẩu hiện tại không đúng.');
+        return;
+      }
+      if (newPw !== confirmPw) {
+        alert('Mật khẩu mới và xác nhận không khớp.');
+        return;
+      }
+      if (newPw.length < 6) {
+        alert('Mật khẩu mới phải có tối thiểu 6 kí tự.');
+        return;
+      }
+      user.password = newPw;
+    }
+
+    // Update profile fields
+    user.profile.fullName = fullNameInput.value.trim() || '';
+    user.profile.email = emailInput.value.trim() || '';
+    user.profile.address = addressInput.value.trim() || '';
+
+    // Apply username change (if any)
+    if (newUsername !== user.username) {
+      // update the array entry
+      const idx = accounts.findIndex(a => a.username === user.username);
+      if (idx > -1) accounts[idx].username = newUsername;
+      // update sessionStorage
+      sessionStorage.setItem('loggedInUser', newUsername);
+    }
+
+    // Persist
+    localStorage.setItem('accounts', JSON.stringify(accounts));
+
+    // Clear password inputs for safety
+    currentPasswordInput.value = '';
+    newPasswordInput.value = '';
+    confirmPasswordInput.value = '';
+
+    alert('Cập nhật thông tin thành công!');
   });
 
   // Logout
-  document.getElementById("logoutBtn").addEventListener("click", () => {
-    localStorage.removeItem("currentUser");
-    alert("Đã đăng xuất.");
-    window.location.href = "../../index.html";
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+    sessionStorage.removeItem('loggedInUser');
+    alert('Đã đăng xuất.');
+    location.href = '../../index.html';
   });
 
-  // Delete account
-  document.getElementById("deleteAccountBtn").addEventListener("click", () => {
-    if (
-      confirm(
-        "Bạn có chắc chắn muốn xóa tài khoản? Hành động này không thể hoàn tác.",
-      )
-    ) {
-      const updatedUsers = users.filter((u) => u.username !== currentUser);
-      localStorage.setItem("users", JSON.stringify(updatedUsers));
-      localStorage.removeItem("currentUser");
-      alert("Tài khoản đã được xóa.");
-      window.location.href = "../../index.html";
-    }
+  // Delete account flow: show confirmation area and require typing username
+  const deleteText = document.getElementById('deleteAccountText');
+  const deleteArea = document.getElementById('deleteConfirmArea');
+  const currentUsernameLabel = document.getElementById('currentUsernameLabel');
+  const deleteConfirmInput = document.getElementById('deleteConfirmInput');
+  const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+  const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+
+  currentUsernameLabel.textContent = user.username;
+
+  deleteText.addEventListener('click', () => {
+    alert('Bạn sắp xóa tài khoản. Hành động này không thể hoàn tác.');
+    deleteArea.style.display = 'block';
+    deleteConfirmInput.focus();
   });
+
+  cancelDeleteBtn.addEventListener('click', () => {
+    deleteArea.style.display = 'none';
+    deleteConfirmInput.value = '';
+  });
+
+  confirmDeleteBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const typed = deleteConfirmInput.value.trim();
+    if (typed !== user.username) {
+      alert('Tên đăng nhập nhập không khớp. Vui lòng gõ chính xác tên đăng nhập để xóa.');
+      return;
+    }
+
+    // remove account and persist
+    accounts = accounts.filter(a => a.username !== user.username);
+    localStorage.setItem('accounts', JSON.stringify(accounts));
+    sessionStorage.removeItem('loggedInUser');
+    alert('Tài khoản đã được xóa.');
+    location.href = '../../index.html';
+  });
+
 })();
