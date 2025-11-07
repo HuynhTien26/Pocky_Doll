@@ -51,6 +51,14 @@
 
   const isSignup = form.id === "signupForm";
 
+  // Initialize demo account if not exists
+  const demoUser = { username: "khachhang1", password: "demodemo" };
+  const users = JSON.parse(localStorage.getItem("users")) || [];
+  if (!users.find((u) => u.username === "khachhang1")) {
+    users.push(demoUser);
+    localStorage.setItem("users", JSON.stringify(users));
+  }
+
   // `(evt) =>` is the same as `function (evt)`
   form.addEventListener("submit", (evt) => {
     evt.preventDefault();
@@ -91,10 +99,38 @@
       password: pass ? "●●●●● (hidden)" : "",
     });
 
-    alert(
-      (isSignup ? "Đăng ký" : "Đăng nhập") +
-        " (demo). Replace this handler with your backend call.",
+    // LocalStorage-based logic
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+
+    if (isSignup) {
+      if (users.find((u) => u.username === username)) {
+        alert("Tên đăng nhập đã tồn tại. Vui lòng chọn tên khác.");
+        return;
+      }
+
+      // save new user
+      users.push({ username, password: pass });
+      localStorage.setItem("users", JSON.stringify(users));
+      alert("Đăng ký thành công! Bạn có thể đăng nhập ngay bây giờ.");
+      form.reset();
+
+      // Redirect to login.html after signup
+      window.location.href = "login.html";
+      return;
+    }
+
+    const found = users.find(
+      (u) => u.username === username && u.password === pass,
     );
-    form.reset();
+    if (found) {
+      sessionStorage.setItem("loggedInUser", username);
+      alert("Đăng nhập thành công! Chào, " + username + " 👋");
+      form.reset();
+
+      // Redirect to index.html after login
+      window.location.href = "../index.html";
+    } else {
+      alert("Sai tên đăng nhập hoặc mật khẩu.");
+    }
   });
 })();
