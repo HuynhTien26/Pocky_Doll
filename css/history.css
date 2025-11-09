@@ -4,18 +4,101 @@
     --secondary: #ffc107;
     --text-dark: #333;
     --bg-light: #fff;
-    --bg-body: #f4f4f4;
+    --bg-body: #efece6;
+    /* Bổ sung các biến từ HTML gốc để đồng bộ */
+    --muted: #6c757d; 
+    --card-border: #e9ecef;
+    --bg: #efece6;
+    --blue: #2f9bf3;
+    --blue-dark: #1c6ea4;
+    --pastel: #d6f1ff;
+    --deal-color: #ff5722;
 }
+
+/* ---------- Thiết lập lại (Reset) ---------- */
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+}
+
+/* --- CSS DÀNH CHO HEADER VÀ CĂN CHỈNH --- */
+.site-header {
+    position: sticky; 
+    top: 0; 
+    z-index: 200; 
+    background: #fff;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    padding: 8px 0; 
+}
+.header-inner {
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 14px 10px;
+    gap: 12px;
+}
+.header-left {
+    flex: 0 0 auto;
+    display: flex; 
+    align-items: center;
+    gap: 12px; 
+    margin-right: 20px; 
+}
+.header-center { 
+    flex: 1 1 50%; 
+    display: flex; 
+    justify-content: center;
+    max-width: 450px;
+}
+.header-right { 
+    flex: 0 0 auto; 
+    display: flex; 
+    gap: 10px; 
+    align-items: center; 
+}
+.logo a img {
+    width: 120px;
+    height: auto;
+}
+
+/* Đồng bộ CSS Icons */
+.icon-with-label { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    gap: 6px; 
+    cursor: pointer; 
+    width: 72px; 
+    text-decoration: none; 
+    color: #333;
+    opacity: 0.8;
+}
+.icon-wrap {
+    width: 38px; height: 38px; border-radius: 50%; background: #eee; 
+    display: flex; align-items: center; justify-content: center; color: #666;
+}
+.icon-label { font-size: 12px; }
+.history-item .icon-label { line-height: 1.2; }
+
+
+/* --- Bắt đầu CSS Trang Lịch Sử --- */
 body {
     font-family: 'Roboto', sans-serif;
     background: var(--bg-body);
     color: var(--text-dark);
     margin: 0;
-    padding: 20px;
+    padding-top: 0; /* Đặt lại padding-top do header sticky */
+    padding-bottom: 20px;
 }
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
+    width: 50%; /* Đảm bảo nó chiếm toàn bộ chiều rộng có sẵn */
+    max-width: none; /* Hoặc bỏ hoàn toàn dòng này, hoặc dùng 'none' */
+    
+    /* ... các thuộc tính khác giữ nguyên ... */
+    margin: 20px auto 0 auto; 
     background: var(--bg-light);
     padding: 30px;
     border-radius: 10px;
@@ -87,16 +170,39 @@ h1 {
     opacity: 0.8;
 }
 
+/* Thêm CSS cho chi tiết giao hàng */
+.delivery-details p {
+    margin: 0;
+    line-height: 1.6;
+}
+.delivery-details {
+    font-size: 0.9em; 
+    margin-bottom: 10px;
+}
+.delivery-details .receiver-name {
+    font-weight: bold; 
+    color: var(--primary);
+}
+.delivery-details .receiver-phone {
+    font-style: italic;
+    color: var(--muted);
+}
+
+
 /* Tổng tiền */
 .order-total {
     text-align: right;
     margin-top: 15px;
     font-size: 1.1em;
     font-weight: bold;
-    color: var(--secondary);
+    color: var(--secondary); /* Thống nhất màu sắc nếu cần, hiện tại là secondary */
     border-top: 2px solid #eee;
     padding-top: 10px;
 }
+.order-total span {
+    color: var(--primary); /* Đảm bảo tổng tiền nổi bật */
+}
+
 
 /* Message khi không có đơn hàng */
 #no-history-message {
@@ -105,4 +211,9 @@ h1 {
     color: #999;
     font-size: 1.2em;
     display: none; /* JS sẽ hiển thị nếu cần */
+}
+#no-history-message a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: bold;
 }
