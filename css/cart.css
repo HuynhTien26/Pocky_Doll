@@ -26,12 +26,24 @@ body {
     min-height: 100vh;
 }
 
+/* Ẩn mũi tên trong input số lượng */
+.quantity-input::-webkit-outer-spin-button,
+.quantity-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.quantity-input[type=number] {
+    -moz-appearance: textfield;
+}
+
 /* ---------- Layout container chung ---------- */
 .container { 
     max-width: 1200px; 
     margin: 0 auto; 
     padding: 0 10px; 
 }
+
+/* Ẩn tiêu đề cũ nếu có */
 .page-title {
     font-size: 24px;
     font-weight: 700;
@@ -39,6 +51,42 @@ body {
     margin-top: 30px; 
     margin-bottom: 20px; 
     padding-left: 10px; 
+}
+
+/* =================================================================== */
+/* Tiêu đề Trang có Icon (GIỎ HÀNG / LỊCH SỬ MUA HÀNG) */
+/* (Đã thêm để khớp với yêu cầu và ảnh mẫu) */
+/* =================================================================== */
+
+.page-header-container {
+    max-width: 1200px; 
+    margin: 0 auto; 
+    padding: 0 10px; 
+    margin-top: 30px; 
+    margin-bottom: 20px; 
+}
+
+.page-header {
+    font-size: 26px; /* Kích thước lớn hơn */
+    font-weight: 700;
+    color: #2f9bf3 ;
+    display: flex; /* Bật flexbox để căn icon và text */
+    align-items: center;
+    gap: 12px; /* Khoảng cách giữa icon và text */
+    padding-left: 0px; /* Loại bỏ padding cũ */
+}
+
+.page-header .fa-solid {
+    color: var(--blue);
+    font-size: 30px;
+}
+
+.page-header-container .header-divider {
+    height: 3px;
+    background: linear-gradient(to right, var(--blue), transparent);
+    border: none;
+    margin-top: 10px;
+    opacity: 0.8;
 }
 
 /* =================================================================== */
@@ -51,13 +99,13 @@ body {
     z-index: 200; 
     background: #fff;
     border-bottom: 1px solid rgba(0,0,0,0.06);
-    padding: 8px 0; 
+    padding: 4px 0; 
 }
 .header-inner {
     display: flex; 
     align-items: center; 
     justify-content: flex-start; 
-    padding: 14px 0px;
+    padding: 14px 170px;
     gap: 12px;
 }
 .header-left {
@@ -168,35 +216,34 @@ body {
     font-size: 18px;
 }
 
-/*=============================icon lịch sử đơn hàng========================*/
+/*=============================icon lịch sử đơn hàng========================*/
 
 /* Điều chỉnh chiều rộng cho icon Lịch sử để chứa chữ 2 dòng */
 .icon-with-label.history-item .icon-wrap i {
-    width: 80px; /* Tăng từ 72px lên 80px để chứa chữ ngắt dòng */
+    width: 80px; 
     text-align: center;
 }
 
 /* Đảm bảo icon bên trong vòng tròn lớn hơn (nếu cần) */
 .history-item .icon-wrap .fa-solid {
-    /* Tăng kích thước icon lên một chút để nổi bật (Tùy chọn) */
     font-size: 20px; 
 }
 
 /* Căn chỉnh chữ 2 dòng */
 .history-item .icon-label {
-    line-height: 1.2; /* Giúp chữ 2 dòng sát nhau hơn */
-    font-size: 13px; /* Tùy chọn: Tăng font size một chút cho dễ đọc */
+    line-height: 1.2; 
+    font-size: 13px; 
 }
 
 /* Nếu bạn muốn thay đổi màu sắc của icon (giống như ảnh mẫu) */
 .history-item .icon-wrap {
-    background: #eee; /* Giữ màu xám */
-    color: #333; /* Giữ màu đen cho icon bên trong */
+    background: #eee; 
+    color: #333; 
 }
 /* Loại bỏ hiệu ứng hover đổi màu blue cho riêng icon Lịch sử nếu bạn muốn nó luôn xám đen */
 .history-item:hover .icon-wrap { 
-    background: #e9e9e9; /* Giữ màu xám gần như cũ khi hover */
-    color: #333; /* Giữ màu icon đen */
+    background: #e9e9e9; 
+    color: #333; 
 }
 
 /* =================================================================== */
@@ -224,7 +271,7 @@ body {
     align-items: center;
     font-size: 14px;
     border: 1px solid var(--card-border);
-    display: grid; /* Mặc định là grid */
+    display: grid; 
 }
 /*căn chỉnh tiêu đề cột */
 .cart-header > div:nth-child(2) { /* Sản Phẩm */
@@ -250,7 +297,7 @@ body {
     gap: 10px;
     padding: 16px 0;
     border-top: 1px solid #f0f0f0;
-    display: grid; /* Mặc định là grid */
+    display: grid; 
 }
 .cart-section .cart-item:first-child {
     border-top: none;
