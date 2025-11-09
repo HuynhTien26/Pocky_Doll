@@ -1,3 +1,4 @@
+
 // Định dạng tiền tệ VND
 const formatter = new Intl.NumberFormat('vi-VN', {
     style: 'currency',
@@ -5,42 +6,20 @@ const formatter = new Intl.NumberFormat('vi-VN', {
     minimumFractionDigits: 0
 });
 
-// --- DỮ LIỆU MÔ PHỎNG LỊCH SỬ MUA HÀNG ---
-// Trong ứng dụng thực, dữ liệu này sẽ được lấy từ API hoặc Database
-const mockOrderHistory = [
-    {
-        id: "DH1001",
-        date: "2023-11-25",
-        status: "completed",
-        total: 2100000,
-        products: [
-            { name: "Doll Zenitsu Agatsuma", quantity: 2, price: 350000 },
-            { name: "Áo Phông Anime", quantity: 3, price: 400000 }
-        ],
-        address: "Số 10, Đường ABC, Quận 1, TP. HCM"
-    },
-    {
-        id: "DH1002",
-        date: "2023-12-01",
-        status: "pending",
-        total: 950000,
-        products: [
-            { name: "Balo Vải Canvas", quantity: 1, price: 450000 },
-            { name: "Móc Khóa Nezuko", quantity: 5, price: 100000 }
-        ],
-        address: "Số 20, Đường XYZ, Quận Hai Bà Trưng, Hà Nội"
-    },
-    {
-        id: "DH1003",
-        date: "2024-01-10",
-        status: "cancelled",
-        total: 1200000,
-        products: [
-            { name: "Mô Hình Lắp Ráp", quantity: 1, price: 1200000 }
-        ],
-        address: "Số 5, Ngõ 1, Quận 5, TP. HCM"
-    },
-];
+// ----------------------------------------------------------------------
+// ⭐️ LOGIC MỚI: TẢI DỮ LIỆU TỪ LOCAL STORAGE
+// ----------------------------------------------------------------------
+function loadOrderHistory() {
+    const historyString = localStorage.getItem('orderHistory');
+    try {
+        // Trả về mảng rỗng nếu không có dữ liệu
+        return historyString ? JSON.parse(historyString) : [];
+    } catch (e) {
+        console.error("Lỗi khi đọc lịch sử đơn hàng:", e);
+        return [];
+    }
+}
+// ----------------------------------------------------------------------
 
 // Hàm lấy class CSS cho trạng thái
 function getStatusClass(status) {
@@ -74,7 +53,10 @@ function renderOrderHistory(orders) {
     }
 
     noMessage.style.display = 'none';
-    
+
+    // Sắp xếp đơn hàng theo ngày giảm dần
+    orders.sort((a, b) => new Date(b.date) - new Date(a.date));
+
     const historyHTML = orders.map(order => {
         // Tạo HTML cho danh sách sản phẩm
         const productListHTML = order.products.map(p => `
@@ -83,6 +65,28 @@ function renderOrderHistory(orders) {
                 <small>${formatter.format(p.price * p.quantity)}</small>
             </li>
         `).join('');
+
+        // 💥 LOGIC HIỂN THỊ THÔNG TIN GIAO HÀNG ĐÃ ĐƯỢC CẬP NHẬT 💥
+        const deliveryDetailsHTML = `
+            <div style="font-size: 0.9em; margin-bottom: 10px; line-height: 1.6;">
+                <p style="margin: 0;">
+                    Người nhận: 
+                    <span style="font-weight: bold; color: var(--primary);">
+                        ${order.receiverName || '---'}
+                    </span>
+                </p>
+                <p style="margin: 0; color: var(--muted);">
+                    SĐT: 
+                    <span style="font-style: italic;">
+                        ${order.receiverPhone || '---'}
+                    </span>
+                </p>
+                <p style="margin: 0;">
+                    Địa chỉ: 
+                    ${order.deliveryAddress || order.address || '---'}
+                </p>
+            </div>
+        `;
 
         return `
             <div class="order-card">
@@ -96,15 +100,13 @@ function renderOrderHistory(orders) {
                         ${getStatusText(order.status)}
                     </span>
                 </div>
-                
-                <p style="font-size: 0.9em; margin-bottom: 5px;">
-                    Địa chỉ: <span style="font-style: italic;">${order.address}</span>
-                </p>
+
+                ${deliveryDetailsHTML} 
 
                 <ul class="product-list">
                     ${productListHTML}
                 </ul>
-SS
+
                 <div class="order-total">
                     Tổng tiền: <span style="color: var(--primary);">${formatter.format(order.total)}</span>
                 </div>
@@ -117,5 +119,7 @@ SS
 
 // Khởi tạo khi trang tải xong
 document.addEventListener('DOMContentLoaded', () => {
-    renderOrderHistory(mockOrderHistory);
+    // ⭐️ GỌI HÀM MỚI ĐỂ TẢI DỮ LIỆU THỰC
+    const userHistory = loadOrderHistory(); 
+    renderOrderHistory(userHistory);
 });
