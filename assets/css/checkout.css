@@ -1,0 +1,247 @@
+/* --- 1. Thiết lập Body (Khung chứa) --- */
+body {
+    margin: 0;
+    height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    font-family: 'Roboto', sans-serif;
+    background-color: #333; 
+}
+
+/* --- 2. Tạo Lớp Phủ Nền (Background Layer) và Làm Mờ --- */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0; 
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1; 
+    
+    background-color: #efece6; 
+    background-size: cover; 
+    background-position: center;
+}
+
+/* --- 3. Định kiểu Tiêu đề "Đơn hàng của bạn" --- */
+.page-title {
+    color: #333; 
+    margin-bottom: 20px; 
+    font-size: 2.5em; 
+    font-weight: bold;
+    z-index: 1; 
+    padding: 10px 20px; 
+    background-color: rgba(255, 255, 255, 0.95); 
+    border-radius: 8px;
+}
+
+/* --- 4. Tạo Hiệu ứng Banner Nổi (Checkout Card) --- */
+.login-card {
+    width: 1300px; 
+    padding: 40px 50px; 
+    background-color: #7d9eb7; 
+    border-radius: 15px; 
+    box-shadow: 
+        0 10px 20px rgba(0, 0, 0, 0.5), 
+        0 0 15px rgba(255, 255, 255, 0.1); 
+    
+    position: relative;
+    z-index: 1;
+    color: white; 
+    text-align: left; 
+    
+    max-height: 90vh; 
+    overflow-y: auto; 
+}
+
+/* ĐIỀU CHỈNH: Tiêu đề bên trong banner */
+.login-card h2 {
+    text-align: center;
+    font-size: 2.2em; 
+    margin-top: 35px; 
+    margin-bottom: 25px; 
+}
+
+/* Cấu trúc chi tiết đơn hàng */
+.order-section {
+    padding: 20px 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+.order-section h3 {
+    margin-top: 0;
+    color: #ffc107; 
+    font-size: 1.6em;
+    margin-bottom: 15px;
+}
+
+/* Định dạng sản phẩm */
+.product-item {
+    display: grid;
+    grid-template-columns: 80px 1fr 150px; 
+    gap: 15px;
+    padding: 10px 0;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+.product-item:first-child { border-top: none; }
+.product-image { width: 80px; height: 80px; object-fit: cover; border-radius: 6px; }
+.product-details strong { display: block; font-size: 1.1em; margin-bottom: 4px; }
+.product-details span { opacity: 0.8; font-size: 0.9em; }
+.item-total { text-align: right; font-size: 1.2em; color: #f7ff9e; }
+
+/* Định dạng tổng tiền cuối cùng */
+.final-total {
+    text-align: right;
+    padding-top: 20px;
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #fff;
+}
+.final-total span {
+    color: #ffc107; 
+    font-size: 1.2em;
+}
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Nền mờ */
+    z-index: 1000;
+    display: flex; /* Dùng flex để căn giữa dễ dàng hơn */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #333; /* Màu nền pop-up (giống hình cũ) */
+    color: white;
+    padding: 25px;
+    border-radius: 10px;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Nút Xác nhận */
+.confirm-button {
+    width: 100%; 
+    padding: 15px; 
+    font-size: 1.4em; 
+    background-color: #ffc107; 
+    border: none; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    color: #333; 
+    font-weight: bold;
+    margin-top: 30px;
+    transition: background 0.2s;
+}
+.confirm-button:hover { background-color: #e0ac08; }
+
+/* === CSS FORM ĐỊA CHỈ === */
+.address-toggle {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.address-toggle button {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    padding: 8px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    font-weight: bold;
+}
+.address-toggle button.active {
+    background: #ffc107;
+    color: #333;
+    border-color: #ffc107;
+}
+
+/* ⭐️ CODE FIX LỖI HIỂN THỊ INPUT/SELECT VÀ MÀU SẮC CHO NỀN TỐI ⭐️ */
+.address-form-new input,
+.address-form-new select {
+    width: 100%;
+    padding: 12px 15px; 
+    margin-bottom: 0; 
+    border: 1px solid #ffffff66;
+    background-color: rgba(0, 0, 0, 0.2);
+    color: #fff; 
+    border-radius: 6px;
+    font-size: 1em;
+    box-sizing: border-box; 
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.address-form-new input:focus,
+.address-form-new select:focus {
+    outline: none;
+    background-color: rgba(0, 0, 0, 0.4); 
+    border-color: #ffc107;
+}
+
+.address-form-new input::placeholder {
+    color: #ffffffa0;
+}
+
+.address-form-new select option {
+    color: #333; 
+    background: #fff;
+}
+/* ⭐️ KẾT THÚC FIX LỖI INPUT ⭐️ */
+
+
+/* 🚀 PHẦN LAYOUT GRID: ĐÃ SỬA ĐẢO VỊ TRÍ CHÍNH XÁC 🚀 */
+.address-form-new {
+    display: grid;
+    /* Chia tổng thành 5 phần bằng nhau (1fr 1fr 1fr 1fr 1fr) */
+    grid-template-columns: repeat(5, 1fr); 
+    gap: 15px; 
+}
+
+/* Họ và Tên: HÀNG 1 - Chiếm 3/5 */
+.address-form-new #new_name {
+    grid-column: 1 / span 3; 
+    grid-row: 1; 
+}
+
+/* SỐ NHÀ, TÊN ĐƯỜNG: HÀNG 2 - Chiếm 5/5 */
+.address-form-new #new_address_detail {
+    grid-column: 1 / 6; /* Bắt đầu từ cột 1, kéo dài 5 cột (5/5) */
+    grid-row: 2; /* Ép vào hàng 2 */
+}
+
+/* SỐ ĐIỆN THOẠI: HÀNG 1 - Chiếm 2/5 */
+.address-form-new #new_phone {
+    grid-column: 4 / 6; /* Kéo dài 5 cột */
+    grid-row: 1; /* Ép xuống hàng 1 */
+}
+
+/* Tỉnh/Thành & Quận/Huyện: Hàng 3 - Kéo dài 5 cột và chia đôi bên trong */
+.address-form-new .input-group {
+    grid-column: 1 / 6; 
+    grid-row: 3; /* Ép xuống hàng thứ ba */
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 15px;
+    margin: 0;
+}
+
+.current-address-display {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px dashed rgba(255, 255, 255, 0.5);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+/* === KẾT THÚC CSS FORM ĐỊA CHỈ === */
